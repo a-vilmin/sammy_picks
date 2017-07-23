@@ -3,10 +3,10 @@ class Player():
     def __init__(self, player_entry):
         parsed = player_entry.strip().split(',')
         self.pos = parsed[0][1:-1]
-        self.name = parsed[1]
+        self.name = parsed[1].replace("\"", "")
         self.price = int(parsed[2])
         self.matchup = parsed[3]
-        self.avg = float(parsed[4])
+        self.avg = 0
         self.team = parsed[5]
 
     def __lt__(self, other):

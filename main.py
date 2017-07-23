@@ -1,18 +1,11 @@
 from sys import argv
 import league
-
-
-def knapsack(players, max_salary):
-    return []
+import evolution
 
 
 def main():
-    players = league.League(argv[1])
-    x = [len(l) for _, l in players.players.items()]
-    i = x[0]
-    for y in x[1:]:
-        i *= y
-    print(i)
+    players = league.League(argv[1], argv[2], argv[3])
+    evolution.run(players)
 
 
 if __name__ == '__main__':

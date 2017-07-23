@@ -1,4 +1,5 @@
 from random import choice, sample, random, randint
+import tqdm
 
 
 LINEUP_SIZE = 10
@@ -64,7 +65,8 @@ def evolve(lineups, salary_cap, retain=0.2, random_sel=0.05, mutate=0.01):
         if mutate > random():
             lineup_choice = randint(0, len(lineups) - 1)
             lineup_pos = randint(0, LINEUP_SIZE-1)
-            lineup[lineup_pos] = lineups[lineup_choice][lineup_pos]
+            if lineups[lineup_choice][lineup_pos] not in lineup:
+                lineup[lineup_pos] = lineups[lineup_choice][lineup_pos]
 
     parents_len = len(parents)
     children = []
@@ -79,13 +81,11 @@ def evolve(lineups, salary_cap, retain=0.2, random_sel=0.05, mutate=0.01):
 
     return parents + children
 
-if __name__ == '__main__':
-    import league
-    import sys
-    l = league.League(sys.argv[1])
-    lineups, positions = population(l, 5000)
 
-    for _ in range(100):
+def run(league):
+    lineups, positions = population(league, 10000)
+
+    for _ in tqdm.trange(1000):
         lineups = evolve(lineups, 50000)
 
     graded = [(fitness(x, 50000), x) for x in lineups]
